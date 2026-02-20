@@ -17,7 +17,10 @@ dependencies:
   image_picker: ^1.1.2
 
   # OCR / Text Recognition
-  google_mlkit_text_recognition: ^0.13.0
+  google_mlkit_text_recognition: ^0.14.0
+
+  # ML Kit Barcode Scanning (for QR code)
+  google_mlkit_barcode_scanning: ^0.13.0
 
   # State management & routing
   get: ^4.6.6

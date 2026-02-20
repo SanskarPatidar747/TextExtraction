@@ -16,7 +16,7 @@ class TextExtractorPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Photo Text Extractor'),
+        title: const Text('Photo Text/QR Extractor'),
       ),
       body: kIsWeb
           ? _buildNotSupported()
@@ -24,6 +24,8 @@ class TextExtractorPage extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Column(
                 children: [
+                  _buildModeSelector(controller),
+                  const SizedBox(height: 12),
                   _buildImagePreview(controller),
                   const SizedBox(height: 16),
                   _buildButtons(controller),
@@ -35,6 +37,28 @@ class TextExtractorPage extends StatelessWidget {
               ),
             ),
     );
+  }
+
+  Widget _buildModeSelector(TextExtractorController controller) {
+    return Obx(() {
+      return Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ChoiceChip(
+            label: const Text('Text'),
+            selected: controller.extractionMode.value == ExtractionMode.text,
+            onSelected: (v) =>
+                controller.setExtractionMode(ExtractionMode.text),
+          ),
+          const SizedBox(width: 12),
+          ChoiceChip(
+            label: const Text('QR/Barcode'),
+            selected: controller.extractionMode.value == ExtractionMode.qr,
+            onSelected: (v) => controller.setExtractionMode(ExtractionMode.qr),
+          ),
+        ],
+      );
+    });
   }
 
   Widget _buildNotSupported() {
@@ -90,9 +114,12 @@ class TextExtractorPage extends StatelessWidget {
       children: [
         Expanded(
           child: ElevatedButton.icon(
-            onPressed: controller.pickImageFromCamera,
-            icon: const Icon(Icons.camera_alt_outlined),
-            label: const Text('Camera'),
+            onPressed: controller.scanFromCamera,
+            icon: const Icon(Icons.qr_code_scanner),
+            label: Obx(() => Text(
+                controller.extractionMode.value == ExtractionMode.qr
+                    ? 'Scan QR'
+                    : 'Camera')),
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
@@ -103,7 +130,7 @@ class TextExtractorPage extends StatelessWidget {
           child: OutlinedButton.icon(
             onPressed: controller.pickImageFromGallery,
             icon: const Icon(Icons.photo_library_outlined),
-            label: const Text('Gallery'),
+            label: const Text('Galleryy'),
             style: OutlinedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 12),
             ),
@@ -208,4 +235,3 @@ class TextExtractorPage extends StatelessWidget {
     });
   }
 }
-

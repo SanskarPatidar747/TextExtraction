@@ -5,4 +5,3 @@ class ExtractedTextModel {
 
   bool get hasText => text.trim().isNotEmpty;
 }
-
